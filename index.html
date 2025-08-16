@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<title>Jogo de Batalha: Herói vs Inimigo</title>
+<style>
+    /* Estilo do corpo da página */
+    body {
+      font-family: 'Orbitron', sans-serif; /* Fonte utilizada para o estilo do texto */
+      background: linear-gradient(135deg, #050d1a, #001529); /* Fundo com gradiente de cor */
+      color: #00c8ff; /* Cor do texto */
+      padding: 30px; /* Espaçamento interno */
+      text-align: center; /* Centraliza o texto */
+    }
+
+    /* Estilo do contêiner da batalha */
+    .batalha {
+      display: flex;
+      justify-content: center; /* Centraliza os itens horizontalmente */
+      gap: 75px; /* Espaço entre os cards de herói e inimigo */
+      flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha se necessário */
+    }
+
+    /* Estilo do card que contém as informações dos personagens */
+    .card {
+      background: #0a0a1e; /* Cor de fundo escura */
+      border: 3px solid #00eaff; /* Borda azul */
+      border-radius: 15px; /* Bordas arredondadas */
+      padding: 15px; /* Espaçamento interno */
+      margin: 10px; /* Espaçamento externo */
+      width: 300px; /* Largura fixa para os cards */
+      box-shadow: 0 0 15px #00c8ff; /* Sombra azul para efeito visual */
+    }
+
+    /* Estilo da barra de vida */
+    .vida-bar {
+      height: 24px; /* Altura da barra de vida */
+      background: #333; /* Cor de fundo da barra de vida */
+      border-radius: 4px; /* Bordas arredondadas */
+      overflow: hidden; /* Impede que a barra de vida ultrapasse os limites */
+      margin: 15px 0; /* Espaçamento superior e inferior */
+    }
+
+    /* Estilo da barra de vida interna (do personagem) */
+    .vida {
+      height: 100%; /* A barra de vida ocupa toda a altura da vida do personagem */
+      background: linear-gradient(90deg, #00c8ff, #007acc); /* Cor de fundo gradiente */
+      width: 100%; /* Largura começa em 100% */
+      transition: width 0.5s ease-in-out; /* Transição suave ao mudar a largura */
+    }
+
+    /* Estilo da imagem do personagem */
+    .imagem-personagem {
+      width: 120px; /* Largura fixa da imagem */
+      height: 120px; /* Altura fixa da imagem */
+      object-fit: contain; /* Garante que a imagem não seja distorcida */
+      transition: 0.3s; /* Transição suave para efeitos visuais */
+      filter: drop-shadow(0 0 5px #00c8ff); /* Efeito de sombra para dar destaque */
+      margin-top: 20px; /* Espaço superior */
+      margin-bottom: 10px; /* Espaço inferior */
+    }
+
+    /* Estilo da imagem das opções de escolha do personagem */
+    .escolha-img {
+      width: 150px; /* Largura das imagens das opções */
+      height: 150px; /* Altura das imagens das opções */
+      object-fit: contain; /* Garante que a imagem se ajuste sem distorção */
+      transition: 0.3s; /* Transição suave */
+      filter: drop-shadow(0 0 5px #00c8ff); /* Efeito de sombra */
+      margin-top: 30px; /* Espaço superior */
+      margin-bottom: 15px; /* Espaço inferior */
+    }
+
+    /* Estilo do botão */
+    .botao {
+      background: #00eaff; /* Cor de fundo do botão */
+      color: #000; /* Cor do texto do botão */
+      border: none; /* Remove a borda padrão */
+      padding: 15px 30px; /* Espaçamento interno */
+      margin: 15px; /* Espaçamento externo */
+      font-weight: bold; /* Deixa o texto em negrito */
+      cursor: pointer; /* Mostra o cursor de "mão" ao passar sobre o botão */
+      border-radius: 7px; /* Bordas arredondadas */
+      box-shadow: 0 0 10px #00eaff; /* Sombra azul para o botão */
+    }
+
+    /* Estilo das mensagens de ataque */
+    .mensagem {
+      margin-top: 22px; /* Espaço superior */
+      color: #00c8ff; /* Cor do texto */
+      font-size: 21px; /* Tamanho da fonte */
+      white-space: pre-line; /* Mantém quebras de linha */
+      text-shadow: 0 0 3px #007acc; /* Efeito de sombra no texto */
+      line-height: 1.8; /* Altura da linha */
+    }
+
+    /* Estilo das opções de escolha do personagem */
+    .escolhas {
+      display: flex;
+      justify-content: center; /* Centraliza as opções */
+      gap: 20px; /* Espaço entre as opções */
+      margin-bottom: 15px; /* Espaço inferior */
+    }
+
+    /* Estilo dos itens das escolhas */
+    .escolha-item {
+      display: flex;
+      flex-direction: column; /* Alinha imagem e texto verticalmente */
+      align-items: center; /* Centraliza o conteúdo */
+      cursor: pointer; /* Cursor de "mão" ao passar sobre o item */
+    }
+
+    /* Estilo do campo de nome */
+    .campo-nome {
+      margin-bottom: 15px; /* Espaço inferior */
+    }
+    .campo-nome input {
+      padding: 8px; /* Espaçamento interno */
+      border-radius: 7px; /* Bordas arredondadas */
+      border: 1px solid #00c8ff; /* Borda azul */
+      font-size: 21px; /* Tamanho da fonte */
+      background: #000; /* Fundo preto */
+      color: #00c8ff; /* Cor do texto */
+      text-align: center; /* Alinha o texto ao centro */
+    }
+
+    /* Estilo para os ataques críticos (animação de brilho) */
+    .glow-hit {
+      animation: glowHit 0.4s ease-in-out;
+    }
+
+    /* Definição da animação de brilho nos ataques */
+    @keyframes glowHit {
+      0% { filter: drop-shadow(0 0 0px #fff); transform: scale(1); }
+      50% { filter: drop-shadow(0 0 20px #00ffff); transform: scale(1.1); }
+      100% { filter: drop-shadow(0 0 0px #fff); transform: scale(1); }
+    }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&amp;display=swap" rel="stylesheet"/>
+</head>
+<body>
+<h1>Jogo de Batalha: Herói vs Inimigo</h1>
+
+<!-- Seleção do nome e personagem do jogador -->
+<div id="selecaoPersonagem">
+  <div class="campo-nome">
+    <label for="nomeJogador">Digite seu nome: </label>
+    <input id="nomeJogador" placeholder="Nome do jogador" type="text"/>
+  </div>
+  <!-- Opções de escolha de personagem -->
+  <div class="escolhas">
+    <label class="escolha-item">
+      <img class="escolha-img" src="https://imgur.com/IYWCgeN.png"/>
+      <input checked="" name="tipoHeroi" type="radio" value="guerreiro"/> Guerreiro
+    </label>
+    <label class="escolha-item">
+      <img class="escolha-img" src="https://imgur.com/UZtrcBI.png"/>
+      <input name="tipoHeroi" type="radio" value="mago"/> Mago
+    </label>
+    <label class="escolha-item">
+      <img class="escolha-img" src="https://i.imgur.com/bvcMMvA.png"/>
+      <input name="tipoHeroi" type="radio" value="Paladina"/> Paladina
+    </label>
+    <label class="escolha-item">
+      <img class="escolha-img" src="https://i.imgur.com/hDQgFiN.png"/>
+      <input name="tipoHeroi" type="radio" value="ninja"/> Ninja
+    </label>
+  </div>
+  <!-- Botão para iniciar o jogo -->
+  <button class="botao" onclick="iniciarJogo()">Começar</button>
+</div>
+
+<!-- Botão para reiniciar o jogo -->
+<button class="botao" id="btnReiniciar" onclick="reiniciarJogo()" style="display:none;">Reiniciar Jogo</button>
+
+<!-- Área de batalha -->
+<div id="jogo" style="display:none;">
+  <div class="batalha">
+    <!-- Card do herói -->
+    <div class="card">
+      <h2 id="nomeHeroiTitulo">🌟 Herói</h2>
+      <img class="imagem-personagem" id="imgHeroi" src=""/>
+      <div id="infoHeroi" style="margin-bottom: 10px;"></div>
+      <div class="vida-bar"><div class="vida" id="barraVidaHeroi"></div></div>
+    </div>
+    <!-- Card do inimigo -->
+    <div class="card">
+      <h2>💀 Inimigo</h2>
+      <img class="imagem-personagem" id="imgInimigo" src=""/>
+      <div id="infoInimigo" style="margin-bottom: 10px;"></div>
+      <div class="vida-bar"><div class="vida" id="barraVidaInimigo"></div></div>
+    </div>
+  </div>
+
+  <!-- Botão de ataque e área de mensagens -->
+  <div>
+    <button class="botao" onclick="heroi.atacar()">Atacar</button>
+    <div class="mensagem" id="mensagemAtaque"></div>
+  </div>
+</div>
+
+<script>
+  // Declaração das variáveis de herói e inimigo
+  let heroi, inimigo;
+  let estadoAnterior;
+
+  // Imagens dos heróis
+  const imagensHeroi = {
+    guerreiro: 'https://imgur.com/IYWCgeN.png',
+    mago: 'https://imgur.com/UZtrcBI.png',
+    Paladina: 'https://i.imgur.com/bvcMMvA.png',
+    ninja: 'https://i.imgur.com/hDQgFiN.png'
+  };
+
+  // Inimigos disponíveis no jogo
+  const inimigos = [
+    { nome: 'Crystal Wolf', imagem: 'https://imgur.com/Q3NH2Ag.png' },
+    { nome: 'Rei Anubis', imagem: 'https://imgur.com/EAhCINg.png' },
+    { nome: 'Ragdoll', imagem: 'https://imgur.com/GVXcjE6.png' },
+    { nome: 'Flagelo Antigo', imagem: 'https://imgur.com/mvmZbei.png' }
+  ];
+
+  // Classe que representa os personagens do jogo
+  class Personagem {
+    constructor(nome, tipo, vida, imagem) {
+      this.nome = nome; // Nome do personagem
+      this.tipo = tipo; // Tipo do personagem (guerreiro, mago, etc.)
+      this.vida = vida; // Vida do personagem
+      this.imagem = imagem; // Imagem do personagem
+    }
+
+    // Define o ataque do personagem de acordo com o tipo
+    obterAtaque() {
+      switch (this.tipo) {
+        case 'mago': return 'Bola de Fogo'; // Ataque do mago
+        case 'guerreiro': return 'Espadada Brutal'; // Ataque do guerreiro
+        case 'Paladina': return 'Choque do Escudo'; // Ataque da paladina
+        case 'ninja': return 'Shuriken Explosiva'; // Ataque do ninja
+        default: return 'Ataque'; // Ataque genérico
+      }
+    }
+
+    // Aplica dano ao personagem
+    receberDano(dano) {
+      this.vida -= dano; // Reduz a vida pelo dano recebido
+      if (this.vida < 0) this.vida = 0; // Impede que a vida fique negativa
+    }
+
+    // Cura o personagem
+    curar(pontos) {
+      this.vida += pontos; // Aumenta a vida
+      if (this.vida > 100) this.vida = 100; // Impede que a vida ultrapasse 100
+    }
+
+    // Método para realizar um ataque
+    atacar() {
+      if (heroi.vida <= 0 || inimigo.vida <= 0) return; // Impede ataques se alguém estiver derrotado
+
+      // Verifica se o ataque é crítico
+      const critico = Math.random() < 0.2; // 20% de chance de ataque crítico
+
+      // Verifica se o herói esquiva do contra-ataque
+      const heroiEsquivou = Math.random() < 0.2; // 20% de chance de esquiva
+
+      // Calcula o dano base do herói
+      let danoHeroiBase = Math.floor(Math.random() * 20 + 10);
+      let danoHeroi = critico ? Math.floor(danoHeroiBase * 1.7) : danoHeroiBase; // Aplica bônus no dano crítico
+
+      let msg = ""; // Mensagem de ataque
+
+      // Aplica o dano no inimigo
+      inimigo.receberDano(danoHeroi);
+
+      // Adiciona o efeito de brilho na imagem do inimigo
+      document.getElementById('imgInimigo').classList.add('glow-hit');
+      setTimeout(() => document.getElementById('imgInimigo').classList.remove('glow-hit'), 400);
+
+      // Mensagem do ataque
+      msg += `${heroi.nome} usou ${this.obterAtaque()} causando ${danoHeroi} de dano!`;
+      if (critico) {
+        msg += `\n⚡ GOLPE CRÍTICO! ⚡`; // Mensagem de golpe crítico
+      }
+      msg += `\n`;
+
+      // Se o inimigo morreu, o herói recupera vida
+      if (inimigo.vida <= 0) {
+        const cura = Math.floor(Math.random() * 81); // Cura aleatória
+        heroi.curar(cura); // O herói cura
+        msg += `${inimigo.nome} foi derrotado! Você recuperou ${cura} de vida.\nUm novo inimigo aparece.`;
+        gerarInimigoAleatorio(); // Gera um novo inimigo
+      } else {
+        // Inimigo contra-ataca
+        const danoInimigo = Math.floor(Math.random() * 15 + 5);
+
+        if (heroiEsquivou) {
+          msg += `\n${heroi.nome} esquivou do ataque de ${inimigo.nome}!`; // Se o herói esquivar
+        } else {
+          heroi.receberDano(danoInimigo); // Aplica dano ao herói
+          // Adiciona o efeito de brilho na imagem do herói
+          document.getElementById('imgHeroi').classList.add('glow-hit');
+          setTimeout(() => document.getElementById('imgHeroi').classList.remove('glow-hit'), 400);
+          msg += `\n${inimigo.nome} atacou e causou ${danoInimigo} de dano!`;
+          if (heroi.vida <= 0) {
+            estadoAnterior = heroi; // Salva o estado do herói
+            mostrarTelaGameOver(); // Exibe a tela de game over
+            return;
+          }
+        }
+      }
+
+      // Exibe a mensagem de ataque
+      document.getElementById('mensagemAtaque').innerText = msg;
+      atualizarInterface(); // Atualiza a interface gráfica
+    }
+  }
+
+  // Função para iniciar o jogo
+  function iniciarJogo() {
+    const tipo = document.querySelector('input[name="tipoHeroi"]:checked').value;
+    const nome = document.getElementById('nomeJogador').value.trim();
+    if (!nome) return alert("Digite o nome do jogador.");
+    heroi = new Personagem(nome, tipo, 100, imagensHeroi[tipo]); // Cria o herói
+    gerarInimigoAleatorio(); // Gera um inimigo aleatório
+    document.getElementById('imgHeroi').src = heroi.imagem; // Exibe a imagem do herói
+    document.getElementById('selecaoPersonagem').style.display = 'none'; // Oculta a seleção de personagem
+    document.getElementById('jogo').style.display = 'block'; // Exibe a área de jogo
+    document.getElementById('btnReiniciar').style.display = 'inline-block'; // Exibe o botão de reiniciar
+    atualizarInterface(); // Atualiza a interface
+  }
+
+  // Função para gerar um inimigo aleatório
+  function gerarInimigoAleatorio() {
+    const sorteado = inimigos[Math.floor(Math.random() * inimigos.length)]; // Sorteia um inimigo
+    inimigo = new Personagem(sorteado.nome, 'inimigo', 100, sorteado.imagem); // Cria o inimigo
+    document.getElementById('imgInimigo').src = inimigo.imagem; // Exibe a imagem do inimigo
+  }
+
+  // Função para atualizar a interface com as informações atuais do jogo
+  function atualizarInterface() {
+    // Atualiza as informações de vida e nome do herói
+    document.getElementById('infoHeroi').innerHTML = `<span style="color:#00ffff">${heroi.nome}</span><br><span style="color:${corDaVida(heroi.vida)}">Vida: ${heroi.vida}/100</span>`;
+    // Atualiza as informações de vida e nome do inimigo
+    document.getElementById('infoInimigo').innerHTML = `<span style="color:#00ffff">${inimigo.nome}</span><br><span style="color:${corDaVida(inimigo.vida)}">Vida: ${inimigo.vida}/100</span>`;
+    // Atualiza as barras de vida
+    document.getElementById('barraVidaHeroi').style.width = heroi.vida + '%';
+    document.getElementById('barraVidaHeroi').style.background = corDaVida(heroi.vida);
+    document.getElementById('barraVidaInimigo').style.width = inimigo.vida + '%';
+    document.getElementById('barraVidaInimigo').style.background = corDaVida(inimigo.vida);
+  }
+
+  // Função para determinar a cor da barra de vida
+  function corDaVida(vida) {
+    if (vida <= 30) return 'red'; // Se a vida for menor ou igual a 30%, a cor é vermelha
+    if (vida <= 60) return 'yellow'; // Se a vida for menor ou igual a 60%, a cor é amarela
+    return 'lime'; // Se a vida for maior que 60%, a cor é verde limão
+  }
+
+  // Função para mostrar a tela de game over
+  function mostrarTelaGameOver() {
+    document.body.innerHTML = `
+      <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; background:#000;">
+        <img src="https://imgur.com/jICalcO.png" style="width:95%; max-width:1200px; margin-bottom:40px;">
+        <button onclick="location.reload()" style="margin:10px; padding:10px 20px; font-size:16px; font-weight:bold; background:#00eaff; border:none; border-radius:5px; cursor:pointer; box-shadow:0 0 10px #00eaff;">Reiniciar Partida</button>
+      </div>`;
+  }
+
+  // Função para reiniciar o jogo
+  function reiniciarJogo() {
+    location.reload(); // Recarrega a página para reiniciar o jogo
+  }
+</script>
+</body>
+</html>
