@@ -19,18 +19,18 @@ Este jogo foi desenvolvido utilizando as seguintes tecnologias:
 
 ## 🚀 **Como Jogar** 🚀
 
-1. **Escolha Seu Herói** 🎭: Selecione entre 4 heróis com habilidades únicas! Quem será o seu guerreiro preferido? Guerreiro 🛡️, Mago 🔮, Paladina 🏰 ou Ninja 🥷? A escolha é sua!
-2. **Comece a Batalha** ⚔️: Após escolher seu herói e inserir seu nome, a batalha começa! Prepare-se para enfrentar inimigos poderosos que não vão facilitar as coisas.
-3. **Ataque & Defenda-se** 🥊: Durante a batalha, você pode atacar, mas o inimigo também vai contra-atacar! Estratégia é a chave para vencer.
-4. **Reinicie o Jogo** 🔄: Se o herói for derrotado, não se preocupe! Você pode reiniciar o jogo e tentar novamente para ser ainda mais forte! 💥
+1. **Escolha Seu Herói** 🎭: Selecione entre 4 heróis com habilidades únicas! Guerreiro 🛡️, Mago 🔮, Paladina 🏰 ou Ninja 🥷? A escolha é sua!
+2. **Comece a Batalha** ⚔️: Após escolher seu herói e inserir seu nome, a batalha começa! 
+3. **Ataque & Defenda-se** 🥊: Durante a batalha, você pode atacar, mas o inimigo também vai contra-atacar! 
+4. **Reinicie o Jogo** 🔄: Se o herói for derrotado, não se preocupe! Você pode reiniciar o jogo e tentar novamente. 💥
 
 ---
 
 ## 🔥 **Funcionalidades do Jogo** 🔥
 
 - **Escolha Seu Personagem** 🦸‍♂️: Quatro heróis para você escolher, cada um com um ataque especial! Cada personagem tem um estilo único de combate.
-- **Batalha Turn-Based** ⏳: A batalha segue um sistema de turnos: você ataca, o inimigo ataca, e assim por diante. Use a estratégia para sobreviver!
-- **Ataques Críticos & Esquiva** ⚡: O herói tem 20% de chance de causar um ataque crítico, com danos elevados. Além disso, o herói tem 20% de chance de esquivar-se do ataque inimigo. Prepare-se para surpresas! 🎯
+- **Batalha Turn-Based** ⏳: A batalha segue um sistema de turnos: você ataca, o inimigo ataca, e assim por diante. 
+- **Ataques Críticos & Esquiva** ⚡: O herói tem 20% de chance de causar um ataque crítico, com danos elevados. Além disso, o herói tem 20% de chance de esquivar-se do ataque inimigo. 🎯
 - **Recuperação de Vida** ❤️: Derrotando um inimigo, o herói pode recuperar uma quantidade aleatória de vida, dando uma chance de continuar na luta.
 - **Game Over** 💀: Se a vida do herói chegar a zero, a batalha termina. Mas não se preocupe! Você pode reiniciar o jogo e tentar novamente.
 
