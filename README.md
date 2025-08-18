@@ -19,7 +19,7 @@ Este jogo foi desenvolvido utilizando as seguintes tecnologias:
 
 ## 🚀 **Como Jogar** 🚀
 
-1. **Escolha Seu Herói** 🎭: Selecione entre 4 heróis com habilidades únicas! Guerreiro 🛡️, Mago 🔮, Paladina 🏰 ou Ninja 🥷? A escolha é sua!
+1. **Escolha Seu Herói** 🎭: Selecione entre 4 heróis com habilidades únicas! >> Guerreiro 🛡️, Mago 🔮, Paladina 🏰 ou Ninja 🥷?
 2. **Comece a Batalha** ⚔️: Após escolher seu herói e inserir seu nome, a batalha começa! 
 3. **Ataque & Defenda-se** 🥊: Durante a batalha, você pode atacar, mas o inimigo também vai contra-atacar! 
 4. **Reinicie o Jogo** 🔄: Se o herói for derrotado, não se preocupe! Você pode reiniciar o jogo e tentar novamente. 💥
